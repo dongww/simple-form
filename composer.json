@@ -1,6 +1,6 @@
 {
     "name": "dongww/simple-form",
-    "description": "",
+    "description": "简单，自动化生成表单和处理数据。",
     "require": {
         "symfony/form": "~2.4",
         "dongww/simple-db": "dev-master",
