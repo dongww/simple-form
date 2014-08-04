@@ -6,6 +6,11 @@
         "dongww/simple-db": "dev-master",
         "symfony/yaml": "~2.4"
     },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
     "license": "MIT",
     "authors": [
         {
