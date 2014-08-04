@@ -1,0 +1,16 @@
+{
+    "name": "dongww/simple-form",
+    "description": "",
+    "require": {
+        "symfony/form": "~2.4",
+        "dongww/simple-db": "dev-master",
+        "symfony/yaml": "~2.4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "dongww",
+            "email": "dongww@gmail.com"
+        }
+    ]
+}
