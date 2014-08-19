@@ -38,4 +38,75 @@ class Structure
     {
         return $this->data;
     }
+
+    public function getFormStructure($formName)
+    {
+        return isset($this->data['forms'][$formName])
+            ? $this->data['forms'][$formName]
+            : null;
+    }
+
+    /**
+     * 转换为 Simple-db 的数据结构格式
+     *
+     * @return array
+     */
+    public function toSbDbStructure()
+    {
+        $data       = $this->data;
+        $tableNames = [];
+        $tables     = [];
+        $many_many  = [];
+
+        foreach ($data['forms'] as $formName => $form) {
+            $tableNames[] = $formName;
+        }
+
+        foreach ($data['forms'] as $formName => $form) {
+            if (isset($form['timestamp_able']) && (bool)$form['timestamp_able'] == true) {
+                $tables[$formName]['timestamp_able'] = true;
+            }
+
+            if (isset($form['tree_able']) && (bool)$form['tree_able'] == true) {
+                $tables[$formName]['tree_able'] = true;
+            }
+
+            $tables[$formName]['fields'] = $this->parseFields(
+                $form,
+                $formName,
+                $tables,
+                $tableNames,
+                $many_many
+            );
+        }
+
+        return [
+            'tables'    => $tables,
+            'many_many' => $many_many,
+        ];
+    }
+
+    protected function parseFields($form, $formName, &$tables, $tableNames, &$many_many)
+    {
+        $fields = [];
+
+        foreach ($form['fields'] as $FieldName => $field) {
+            if (!in_array($FieldName, $tableNames)) {
+                $fields[$FieldName]['type'] = $field['type'];
+
+                if (isset($field['required']) && (bool)$field['required'] == true) {
+                    $fields[$FieldName]['required'] = true;
+                }
+            } else {
+                if (isset($field['multiple']) && (bool)$field['multiple'] == true) {
+                    $many_many[] = [$formName, $FieldName];
+                } else {
+                    $tables[$formName]['belong_to'][] = $FieldName;
+                }
+            }
+
+        }
+
+        return $fields;
+    }
 }

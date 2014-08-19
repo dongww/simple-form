@@ -7,17 +7,19 @@
 
 namespace Dongww\SimpleForm;
 
+use Symfony\Component\Form\FormView;
 
 interface FormInterface
 {
     /**
-     * @return mixed
+     * @return FormView
      */
     public function createView();
 
     /**
-     * @param array|object $data
-     * @return mixed
+     * @param  array|object $data
+     *
+     * @return bool
      */
     public function store($data);
 }

@@ -1,0 +1,119 @@
+#数据类型配置文件
+
+# 可用类型:
+# string - 单行文本，最多255个字符
+# integer 整数，例如：142
+# float - 小数，例如:23.01
+# text - 多行文本，纯文本
+# datetime - 日期时间
+# date - 日期
+# time - 时间
+# boolean - 是/否
+
+# imagelist - 图片列表
+# image - 图片，数据库中保存为路径数组
+# file - 文件，数据库中保存为路径
+# filelist - 多个文件，数据库中保存为路径数组
+# video - 视频，数据库中保存为路径
+# videos - 视频列表，数据库中保存为路径
+# html - 富文本内容，图文表格等排版
+
+# select - 选项框
+
+forms:
+    user:
+        label: 用户
+        fields:
+            username:
+                type: string
+                label: 用户名 #为表单字段显示标签，为列表显示列名称
+                in_form: true #是否显示在表单中，可省略，默认值为 true
+                in_list: true #是否显示在列表中，可省略，默认值为 true
+                required: true #是否为必填项，默认为 false
+            password:
+                type: string
+                label: 密码
+                list: false
+                required: true
+            user_group: #关联的表
+                label: 用户分组
+                order: name #在表单中的排序依据，如果是倒序，则前面加负号“-”：-name
+                text: name #显示内容的字段
+                #是否可多选。false 为默认，该选项可省略.当多选时，显示为checkbox形式，否则显示select
+                multiple: true
+
+    user_group:
+        label: 用户分组
+        fields:
+            name:
+                type: string
+                label: 分组名称
+                required: true
+            description:
+                type: text
+                label: 分组说明
+
+    goods:
+        label: 商品
+        #加入created_at, updated_at，自动生成“创建时间”，自动更新“修改时间”
+        timestamp_able: true
+        fields:
+            name:
+                type: string
+                label: 品名
+                required: true
+            price:
+                type: float
+                label: 价格
+                required: true
+            description:
+                type: html
+                label: 详细介绍
+                required: true
+            weight:
+                type: float
+                label: 重量
+            main_image:
+                type: image
+                label: 商品主图
+                size: # 图片上传后经过处理并保存的尺寸。尺寸可任意数量，任意命名，任意大小。
+                    small: [180, 100]
+                    middle: [280, 280]
+                    large: [500, 500]
+            images:
+                # 使用 imagelist 类型的 field 设置并不生成真正字段，
+                # 本质上是生成一个 tableName_fieldName 命名的表，
+                # 例如这里会生成一个名为 goods_images 的表，并同当前表形成多对一的关系。
+                type: imagelist
+                label: 商品图片
+                max: 6 # 最大的图片数量
+                size:
+                    small: [180, 100]
+                    middle: [280, 280]
+                    large: [500, 500]
+
+            goods_category:
+                label: 商品分类
+                text: title #显示内容的字段
+            brand:
+                label: 品牌
+                text: name
+
+    brand:
+        label: 品牌
+        fields:
+            name:
+                type: string
+                label: 品牌名称
+                required: true
+            description:
+                type: text
+                label: 品牌介绍
+    goods_category:
+        label: 商品分类
+        fields:
+            description:
+                type: text
+                label: 分类名称
+                required: true
+        tree_able: true #支持树状储存，包含标题，所以不用在 fields 中另设置标题字段
