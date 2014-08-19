@@ -92,7 +92,13 @@ class Structure
 
         foreach ($form['fields'] as $FieldName => $field) {
             if (!in_array($FieldName, $tableNames)) {
-                $fields[$FieldName]['type'] = $field['type'];
+                switch ($field['type']) {
+                    case 'imagelist':
+                        $fields[$FieldName]['type'] = 'array';
+                        break;
+                    default:
+                        $fields[$FieldName]['type'] = $field['type'];
+                }
 
                 if (isset($field['required']) && (bool)$field['required'] == true) {
                     $fields[$FieldName]['required'] = true;
