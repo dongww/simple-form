@@ -18,6 +18,13 @@ class Structure
         $this->data = $structure;
     }
 
+    /**
+     * 从YAML格式的配置文件创建实例
+     *
+     * @param string $fileName
+     *
+     * @return Structure
+     */
     public static function createFromYaml($fileName)
     {
         $yaml = new Parser();
@@ -26,6 +33,13 @@ class Structure
         return new self($data);
     }
 
+    /**
+     * 从包含表单配置信息的数组创建实例
+     *
+     * @param array $structure
+     *
+     * @return Structure
+     */
     public static function createFromArray(array $structure)
     {
         return new self($structure);
@@ -110,7 +124,6 @@ class Structure
                     $tables[$formName]['belong_to'][] = $FieldName;
                 }
             }
-
         }
 
         return $fields;
