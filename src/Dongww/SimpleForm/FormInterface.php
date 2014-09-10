@@ -17,7 +17,7 @@ interface FormInterface
     public function createView();
 
     /**
-     * @param  array|object $data
+     * @param array|object $data
      *
      * @return bool
      */

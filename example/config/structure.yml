@@ -67,7 +67,7 @@ forms:
                 label: 价格
                 required: true
             description:
-                type: html
+                type: text
                 label: 详细介绍
                 required: true
             weight:

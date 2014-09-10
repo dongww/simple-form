@@ -31,7 +31,7 @@ class Form implements FormInterface
         'boolean'   => 'checkbox',
         'image'     => 'file',
         'file'      => 'file',
-        'imagelist' => 'imagelist',
+        'imagelist' => 'collection',
         'video'     => 'url',
         'videos'    => 'videos',
         'html'      => 'html',
@@ -82,24 +82,34 @@ class Form implements FormInterface
     {
         $formBuilder   = $this->formFactory->createBuilder('form', $data);
         $formStructure = $this->structure->getFormStructure($this->name);
+        $formNames = $this->structure->getFormNames();
 
         foreach ($formStructure['fields'] as $name => $field) {
-            if (!(isset($field['in_form']) ? $field['in_form'] : true)) {
+            if (!(isset($field['in_form']) ? (bool)$field['in_form'] : true)) {
                 continue;
             }
 
-            $type = in_array(
-                $field['type'],
-                self::$filedTypeMap
-            ) ? self::$filedTypeMap[$field['type']] : self::$filedTypeMap['text'];
+            //todo 还未完成
+            if (!in_array($name, $formNames)) {
+                $type = in_array(
+                    $field['type'],
+                    self::$filedTypeMap
+                ) ? self::$filedTypeMap[$field['type']] : self::$filedTypeMap['text'];
 
-            $options = [
-                'label'    => $field['label'],
-                'required' => isset($field['required']) ? $field['required'] : false,
-            ];
+                $options = [
+                    'label'    => $field['label'],
+                    'required' => isset($field['required']) ? $field['required'] : false,
+                ];
 
+                if ($type == 'imagelist') {
+                    $options = [
+                        'type'    => 'file',
+                        'options' => $options,
+                    ];
+                }
 
-            $formBuilder->add($name, $type, $options);
+                $formBuilder->add($name, $type, $options);
+            }
         }
 
         return $formBuilder->getForm();

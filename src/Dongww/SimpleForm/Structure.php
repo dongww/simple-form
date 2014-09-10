@@ -12,6 +12,7 @@ use Symfony\Component\Yaml\Parser;
 class Structure
 {
     protected $data;
+    protected $formNames = [];
 
     public function __construct(array $structure)
     {
@@ -60,6 +61,22 @@ class Structure
             : null;
     }
 
+    public function getFormNames()
+    {
+        if ($this->formNames) {
+            return $this->formNames;
+        }
+
+        $formNames = [];
+        $data      = $this->data;
+
+        foreach ($data['forms'] as $formName => $form) {
+            $formNames[] = $formName;
+        }
+
+        return $formNames;
+    }
+
     /**
      * 转换为 Simple-db 的数据结构格式
      *
@@ -68,13 +85,9 @@ class Structure
     public function toSbDbStructure()
     {
         $data       = $this->data;
-        $tableNames = [];
+        $tableNames = $this->getFormNames();
         $tables     = [];
         $many_many  = [];
-
-        foreach ($data['forms'] as $formName => $form) {
-            $tableNames[] = $formName;
-        }
 
         foreach ($data['forms'] as $formName => $form) {
             if (isset($form['timestamp_able']) && (bool)$form['timestamp_able'] == true) {

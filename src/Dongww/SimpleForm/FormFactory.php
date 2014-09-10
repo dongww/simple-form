@@ -7,21 +7,21 @@
 
 namespace Dongww\SimpleForm;
 
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormFactoryInterface as SfFormFactoryInterface;
 
 class FormFactory
 {
     protected $sfFormFactory;
     protected $structure;
 
-    public function __construct(FormFactoryInterface $factory, Structure $structure)
+    public function __construct(SfFormFactoryInterface $factory, Structure $structure)
     {
         $this->setFormFactory($factory);
         $this->setStructure($structure);
     }
 
     /**
-     * @param  string $name
+     * @param string $name
      *
      * @return FormInterface
      */
@@ -30,7 +30,7 @@ class FormFactory
         return new Form($name, $this->sfFormFactory, $this->structure);
     }
 
-    public function setFormFactory(FormFactoryInterface $formFactory)
+    public function setFormFactory(SfFormFactoryInterface $formFactory)
     {
         $this->sfFormFactory = $formFactory;
     }
